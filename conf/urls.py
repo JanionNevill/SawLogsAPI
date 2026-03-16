@@ -22,4 +22,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),  # Admin site
     path("api-auth/", include("rest_framework.urls")),  # Browsable API authentication
     path("api/v1/", include("logs.urls")),  # Logs endpoints
+    path("api/v1/", include("reservations.urls")),  # Reservations endpoints
 ]

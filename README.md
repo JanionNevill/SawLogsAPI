@@ -12,8 +12,7 @@ The API allows:
   - Split a log
 
 ## To Do:
-- Add endpoint for users to reserve a log
-- Add endpoint for users to view their reservations
+- Add endpoint for users to reserve logs
 - Add endpoint for users to cancel a reservation
 - Add endpoint for users to split a log
 - Add endpoints for user registration
@@ -27,3 +26,4 @@ The API allows:
 - Set default permissions such that:
   - Authenticated users can view logs
   - Staff users can update logs
+- Add endpoints to view their reservations lists and their individual reservations

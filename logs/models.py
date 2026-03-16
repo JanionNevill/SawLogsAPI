@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import SET_NULL, SET_DEFAULT
+from django.db.models import SET_NULL
 
 from reservations.models import Reservation
 
