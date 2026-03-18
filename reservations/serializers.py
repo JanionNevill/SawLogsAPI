@@ -1,14 +1,11 @@
 from django.db.transaction import atomic
 from rest_framework.exceptions import ValidationError
-from rest_framework.fields import (
-    CharField,
-    IntegerField,
-    ListField,
-    SerializerMethodField,
-)
+from rest_framework.fields import CharField
+from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer
 
 from logs.models import Log
+from logs.serializers import LogSerializer
 from reservations.models import Reservation
 
 
@@ -16,18 +13,20 @@ class ReservationSerializer(ModelSerializer):
 
     user = CharField(source="user.username", read_only=True)
 
-    logs = SerializerMethodField()
-    log_ids = ListField(child=IntegerField(), write_only=True)
+    # READ: full objects
+    logs = LogSerializer(source="log_set", many=True, read_only=True)
+
+    # WRITE: IDs
+    logs_input = PrimaryKeyRelatedField(
+        many=True, queryset=Log.objects.all(), write_only=True, source="logs"
+    )
 
     class Meta:
         model = Reservation
-        fields = ["id", "user", "created_at", "log_ids", "logs"]
+        fields = ["id", "user", "created_at", "logs", "logs_input"]
         read_only_fields = ["user", "created_at", "logs"]
 
-    def get_logs(self, obj):
-        return [log.id for log in obj.log_set.all()]
-
-    def validate_log_ids(self, id_list):
+    def validate_logs(self, id_list):
         if not id_list:
             raise ValidationError(f"Reservation must contain at least one log")
 
@@ -52,7 +51,7 @@ class ReservationSerializer(ModelSerializer):
         return id_list
 
     def create(self, validated_data):
-        id_list = validated_data.pop("log_ids")
+        id_list = validated_data.pop("logs")
         user = self.context["request"].user
 
         with atomic():
@@ -70,7 +69,7 @@ class ReservationSerializer(ModelSerializer):
     def update(self, instance, validated_data):
         with atomic():
             current_log_ids = [log.id for log in instance.log_set.all()]
-            new_log_ids = validated_data.pop("log_ids")
+            new_log_ids = validated_data.pop("logs")
 
             # Unreserve logs
             unreserved_log_ids = [
