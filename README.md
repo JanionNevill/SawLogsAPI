@@ -12,7 +12,6 @@ The API allows:
   - Split a log
 
 ## To Do:
-- Add endpoints for user registration
 
 ### Done:
 - Add a reservation model object containing
@@ -27,3 +26,4 @@ The API allows:
 - Add endpoint for users to reserve logs
 - Add endpoint for users to cancel a reservation
 - Add endpoint for users to split a log
+- Add endpoints for user registration

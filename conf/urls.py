@@ -21,6 +21,10 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),  # Admin site
     path("api-auth/", include("rest_framework.urls")),  # Browsable API authentication
+    path("api/v1/auth/", include("dj_rest_auth.urls")),  # API authentication
+    path(
+        "api/v1/auth/registration/", include("dj_rest_auth.registration.urls")
+    ),  # User registration
     path("api/v1/", include("logs.urls")),  # Logs endpoints
     path("api/v1/", include("reservations.urls")),  # Reservations endpoints
 ]

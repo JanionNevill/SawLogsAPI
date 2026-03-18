@@ -41,6 +41,13 @@ INSTALLED_APPS = [
     "rest_framework",  # Make into REST API
     "django_filters",  # Allow for object filtering via URL parameters
     "corsheaders",  # Allow cross-site requests
+    "rest_framework.authtoken",  # Token authentication
+    "allauth",  # Required for user authentication
+    "allauth.account",
+    "allauth.socialaccount",
+    "dj_rest_auth",  # User authentication
+    "dj_rest_auth.registration",  # User registration
+    # "dj_rest_auth.registration",
     # Local
     "accounts",
     "logs",
@@ -55,6 +62,7 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
@@ -143,3 +151,11 @@ CORS_ALLOWED_ORIGINS = (
     "http://localhost:3000",
     "http://localhost:8000",
 )
+
+# django-allauth configurations
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
